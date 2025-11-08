@@ -49,4 +49,4 @@ COPY --from=installer --chown=nodejs:nodejs /usr/src/app/apps/cms/.env ./apps/cm
 USER nodejs
 WORKDIR /usr/src/app/apps/cms
 EXPOSE 1337
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "dev"]
