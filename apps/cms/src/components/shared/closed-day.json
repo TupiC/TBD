@@ -1,0 +1,15 @@
+{
+    "collectionName": "components_shared_closed_days",
+    "info": {
+        "displayName": "Closed Day",
+        "description": ""
+    },
+    "attributes": {
+        "day": {
+            "type": "integer"
+        },
+        "month": {
+            "type": "integer"
+        }
+    }
+}

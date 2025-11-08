@@ -1,0 +1,17 @@
+{
+    "collectionName": "components_shared_geo_coordinates",
+    "info": {
+        "displayName": "Geo Coordinates",
+        "description": ""
+    },
+    "attributes": {
+        "lat": {
+            "type": "decimal",
+            "required": true
+        },
+        "lon": {
+            "type": "decimal",
+            "required": true
+        }
+    }
+}

@@ -8,12 +8,12 @@ services:
         restart: unless-stopped
         env_file: apps/cms/.env
         volumes:
-            - ./config:/opt/app/config
-            - ./src:/opt/app/src
-            - ./package.json:/opt/package.json
-            - ./yarn.lock:/opt/yarn.lock
-            - ./.env:/opt/app/.env
-            - ./public/uploads:/opt/app/public/uploads
+            - ./apps/cms/config:/usr/src/app/apps/cms/config
+            - ./apps/cms/src:/usr/src/app/apps/cms/src
+            - ./package.json:/usr/src/app/package.json
+            - ./yarn.lock:/usr/src/app/yarn.lock
+            - ./apps/cms/.env:/usr/src/app/apps/cms/.env
+            - ./apps/cms/public/uploads:/usr/src/app/apps/cms/public/uploads
         ports:
             - "1337:1337"
         networks:
