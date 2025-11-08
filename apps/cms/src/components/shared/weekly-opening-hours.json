@@ -1,0 +1,44 @@
+{
+    "collectionName": "components_shared_weekly_opening_hours",
+    "info": {
+        "displayName": "Weekly Opening Hours",
+        "description": ""
+    },
+    "attributes": {
+        "mo": {
+            "type": "component",
+            "repeatable": false,
+            "component": "shared.time-range"
+        },
+        "tu": {
+            "type": "component",
+            "repeatable": false,
+            "component": "shared.time-range"
+        },
+        "we": {
+            "type": "component",
+            "repeatable": false,
+            "component": "shared.time-range"
+        },
+        "th": {
+            "type": "component",
+            "repeatable": false,
+            "component": "shared.time-range"
+        },
+        "fr": {
+            "type": "component",
+            "repeatable": false,
+            "component": "shared.time-range"
+        },
+        "sa": {
+            "type": "component",
+            "repeatable": false,
+            "component": "shared.time-range"
+        },
+        "su": {
+            "type": "component",
+            "repeatable": false,
+            "component": "shared.time-range"
+        }
+    }
+}

@@ -1,0 +1,19 @@
+{
+    "collectionName": "components_shared_months",
+    "info": {
+        "displayName": "Month",
+        "description": ""
+    },
+    "attributes": {
+        "start_month": {
+            "type": "integer",
+            "min": 1,
+            "max": 12
+        },
+        "end_month": {
+            "type": "integer",
+            "min": 1,
+            "max": 12
+        }
+    }
+}

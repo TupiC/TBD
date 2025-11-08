@@ -1,0 +1,15 @@
+{
+    "collectionName": "components_shared_time_ranges",
+    "info": {
+        "displayName": "Time Range",
+        "description": ""
+    },
+    "attributes": {
+        "from": {
+            "type": "integer"
+        },
+        "to": {
+            "type": "integer"
+        }
+    }
+}
