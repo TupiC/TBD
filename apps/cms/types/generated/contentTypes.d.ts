@@ -477,6 +477,12 @@ export interface ApiExperienceExperience extends Struct.CollectionTypeSchema {
       'shared.weekly-opening-hours',
       false
     >;
+    origin_url: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     publishedAt: Schema.Attribute.DateTime;
     summary: Schema.Attribute.RichText;
     unrestricted_access: Schema.Attribute.Boolean &
