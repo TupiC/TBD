@@ -2,6 +2,14 @@
 @import "tw-animate-css";
 @import "leaflet/dist/leaflet.css";
 
+@theme inline {
+  --font-merriweather: var(--font-merriweather);
+  --font-merriweather-italic: var(--font-merriweather-italic);
+  --font-roboto: var(--font-roboto);
+  --font-roboto-italic: var(--font-roboto-italic);
+  --color-sc-subheader: #595959;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 html,
