@@ -44,6 +44,7 @@ COPY --from=installer --chown=nodejs:nodejs /usr/src/app/apps/cms/node_modules .
 COPY --from=installer --chown=nodejs:nodejs /usr/src/app/apps/cms/tsconfig.json ./apps/cms/tsconfig.json
 COPY --from=installer --chown=nodejs:nodejs /usr/src/app/apps/cms/public ./apps/cms/public
 COPY --from=installer --chown=nodejs:nodejs /usr/src/app/apps/cms/src ./apps/cms/src
+COPY --from=installer --chown=nodejs:nodejs /usr/src/app/apps/cms/config ./apps/cms/config
 COPY --from=installer --chown=nodejs:nodejs /usr/src/app/apps/cms/.env ./apps/cms/.env
 
 USER nodejs
