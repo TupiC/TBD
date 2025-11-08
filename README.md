@@ -11,12 +11,13 @@ docker-compose up
 Make sure to create .env file in apps/cms/.env
 See apps/cms/.env.example for reference.
 
-
 ## JSON objects
 
 ### TRIP DTO
+
 - userId generated in frontend and persisted in localStorage
 - `GET trip?userId=1234`
+
 ```json
 {
     "planned_visits": [
@@ -30,7 +31,9 @@ See apps/cms/.env.example for reference.
     ]
 }
 ```
+
 - `POST trip?userId=1234`
+
 ```json
 {
     "planned_visits": [
@@ -46,10 +49,13 @@ See apps/cms/.env.example for reference.
 ```
 
 ### Experience DTO
+
 - `GET filter?startDate=2025-11-08T20:31:27.243Z&endDate=...&categories=..`
+
 #### RESULT
+
 ```json
 {
-    "experiences": [{}]
+    [{}]
 }
 ```
