@@ -447,7 +447,7 @@ export interface ApiExperienceExperience extends Struct.CollectionTypeSchema {
   };
   attributes: {
     accessibility_state: Schema.Attribute.Enumeration<
-      ['full', 'partly', 'unknown']
+      ['full', 'partly', 'unknown', 'none']
     >;
     address: Schema.Attribute.Component<'shared.address', false>;
     adults_only: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;

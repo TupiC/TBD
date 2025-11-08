@@ -90,7 +90,8 @@
       "enum": [
         "full",
         "partly",
-        "unknown"
+        "unknown",
+        "none"
       ]
     },
     "origin_url": {

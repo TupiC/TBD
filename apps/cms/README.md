@@ -17,5 +17,5 @@ npm run strapi export -- --no-encrypt --no-compress -f src/data/data
 ## Restore db dump
 
 ```bash
-npm run strapi import -- -f src/data/data.tar
+npm run strapi import -- -f src/data/data.tar --exclude files
 ```
