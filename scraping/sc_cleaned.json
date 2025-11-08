@@ -1277,7 +1277,7 @@
         "from": 1300,
         "to": 1800
       },
-      "opened_on_holidays": false,
+      "opened_on_holidays": false
     },
     "adults_only": false,
     "free_access": false,
@@ -2799,7 +2799,7 @@
         "from": 0,
         "to": 0
       },
-      "opened_on_holidays": false,
+      "opened_on_holidays": false
     },
     "adults_only": false,
     "free_access": true,
