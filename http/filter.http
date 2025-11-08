@@ -1,0 +1,7 @@
+GET http://localhost:3000/api/experience/filterpnp
+
+###
+GET http://localhost:1337/api/experience/filter?startDate=2025-03-08T20:31:27.243Z&endDate=2025-04-08T20:31:27.243Z&categories=excursion
+
+###
+GET http://localhost:3000/api/experience/filter?startDate=2025-03-08T20:31:27.243Z&endDate=2025-04-08T20:31:27.243Z&categories=excursion
