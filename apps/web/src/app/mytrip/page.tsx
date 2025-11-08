@@ -1,5 +1,5 @@
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import MyMap, { MapPoint } from '../../components/ui/Map'
-
 const demoPoints: MapPoint[] = [
   {
     id: 1,
@@ -25,8 +25,20 @@ const demoPoints: MapPoint[] = [
 const Page = (): React.JSX.Element => {
   return (
     <main style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <h1>Map Demo</h1>
-      <MyMap points={demoPoints} zoom={13} />
+      <Tabs defaultValue='timeline' className='w-[100%]'>
+        <TabsList className='w-full flex gap-2 bg-gray-200 p-2 rounded-md'>
+          <TabsTrigger value='timeline' className='flex-1'>
+            Timeline
+          </TabsTrigger>
+          <TabsTrigger value='map' className='flex-1'>
+            Map
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value='timeline'>1</TabsContent>
+        <TabsContent className="flex" value='map'>
+          <MyMap points={demoPoints} zoom={13} />
+        </TabsContent>
+      </Tabs>
     </main>
   )
 }

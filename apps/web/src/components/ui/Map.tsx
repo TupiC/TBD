@@ -26,7 +26,6 @@ const Popup = dynamic(() => import('react-leaflet').then((mod) => mod.Popup), {
 // ---------- Types ----------
 export type MapPoint = {
   id: string | number
-  // If your data is x/y, map x->lng and y->lat
   lat: number // y
   lng: number // x
   title?: string
@@ -35,21 +34,13 @@ export type MapPoint = {
 }
 
 export type PointMapProps = {
-  /** Initial map center */
   center?: [number, number]
-  /** Initial zoom */
   zoom?: number
-  /** Points to render */
   points: MapPoint[]
-  /** Height of the map container (px or CSS size) */
   height?: number | string
-  /** Disable scroll wheel zoom */
   disableScrollWheel?: boolean
 }
 
-// Marker icon will be initialized on the client inside useEffect
-
-// ---------- Component ----------
 export default function MyMap({
   center, //[47.80094, 13.04458] is salzburg
   zoom = 13,
