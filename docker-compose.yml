@@ -10,6 +10,7 @@ services:
         volumes:
             - ./apps/cms/config:/usr/src/app/apps/cms/config
             - ./apps/cms/src:/usr/src/app/apps/cms/src
+            - ./apps/cms/types:/usr/src/app/apps/cms/types
             - ./package.json:/usr/src/app/package.json
             - ./yarn.lock:/usr/src/app/yarn.lock
             - ./apps/cms/.env:/usr/src/app/apps/cms/.env

@@ -49,7 +49,7 @@
         },
         "opened_months": {
             "type": "component",
-            "repeatable": true,
+            "repeatable": false,
             "component": "shared.month"
         },
         "opening_hours": {
