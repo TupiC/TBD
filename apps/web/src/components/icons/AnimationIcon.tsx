@@ -10,12 +10,14 @@ export const AnimationIcon = ({
   duration = 0.5,
   ease = "power2.inOut",
   returnToStart = false,
+  onComplete,
 }: {
   className?: string;
   loop?: boolean;
   duration?: number;
   ease?: string;
   returnToStart?: boolean;
+  onComplete?: () => void;
 }): React.JSX.Element => {
   const playShapeRef = useRef<SVGPathElement>(null);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
@@ -39,11 +41,20 @@ export const AnimationIcon = ({
       repeatDelay: 0.3,
     });
 
-    iconSequence.forEach((targetGroup) => {
+    iconSequence.forEach((targetGroup, index) => {
       tl.to(playShapeRef.current, {
         duration: duration,
         morphSVG: targetGroup,
         ease: ease,
+        onComplete: () => {
+          if (index == iconSequence.length - 1 && !returnToStart) {
+            if (onComplete) {
+              setTimeout(() => {
+                onComplete();
+              }, 500);
+            }
+          }
+        },
       });
     });
 
@@ -52,6 +63,9 @@ export const AnimationIcon = ({
         duration: duration,
         morphSVG: playShapeRef.current,
         ease: ease,
+        onComplete: () => {
+          if (onComplete) onComplete();
+        },
       });
     }
 

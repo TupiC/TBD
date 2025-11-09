@@ -19,8 +19,8 @@ const RootPage = ({ next }: { next: () => void }): React.JSX.Element => {
       </div>
       <div className="flex flex-col justify-between flex-1 z-10">
         <div className={`p-6 flex flex-col items-center gap-1`}>
-          <Heading>Ready for Salzburg?</Heading>
-          <Heading type="h3">Personalize your trip now!</Heading>
+          <Heading>Bereit für Salzburg?</Heading>
+          <Heading type="h3">Personalisiere deine Reise!</Heading>
         </div>
         <div className={`px-12 flex flex-col items-end flex-1`}>
           <Button variant={"round"} size={"round-lg"} onClick={() => next()}>
