@@ -1,7 +1,7 @@
 const styles = {
-  h1: `text-[32px] font-merriweather-italic font-bold`,
-  h2: `text-[24px] font-merriweather`,
-  h3: "font-roboto text-[20px] text-sc-subheader",
+  h1: `text-[32px] leading-10 font-merriweather-italic font-bold`,
+  h2: `text-[24px] leading-8 font-merriweather`,
+  h3: "font-roboto leading-6 text-[20px] text-sc-subheader",
 };
 
 const Heading = ({
@@ -12,6 +12,6 @@ const Heading = ({
   children: React.ReactNode;
 }): React.JSX.Element => {
   const Tag = type;
-  return <Tag className={`leading-8 ${styles[type]}`}>{children}</Tag>;
+  return <Tag className={` ${styles[type]}`}>{children}</Tag>;
 };
 export default Heading;
