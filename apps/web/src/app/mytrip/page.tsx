@@ -2,7 +2,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import MyMap, { MapPoint } from "../../components/ui/Map";
 import { MytripTimeline, TimelineExp } from "@/components/ui/MytripTimeline";
 
-
 const Page = (): React.JSX.Element => {
   const demoExps: MapPoint[] = EXPS.map((exp, index) => ({
     id: index,
@@ -23,7 +22,23 @@ const Page = (): React.JSX.Element => {
   }));
 
   return (
-    <main style={{ height: "100%", display: "flex", flexDirection: "column" }}>
+    <main
+      style={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        padding: "16px 10px",
+        backgroundColor: "#A52522",
+      }}
+    >
+      <h1
+        className="text-white"
+        style={{
+          fontFamily: "var(--font-geist-sans)",
+        }}
+      >
+        Your Trip
+      </h1>
       <Tabs defaultValue="timeline" className="w-[100%] flex-1 flex flex-col">
         <TabsList className="w-full flex gap-2 bg-gray-200 p-2 rounded-md">
           <TabsTrigger value="timeline" className="flex-1">
