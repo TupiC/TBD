@@ -3,7 +3,7 @@ services:
         container_name: cms
         build:
             context: .
-            dockerfile: apps/cms/Dockerfile
+            dockerfile: apps/cms/Dockerfile.prod
         image: strapi:latest
         restart: unless-stopped
         environment:
