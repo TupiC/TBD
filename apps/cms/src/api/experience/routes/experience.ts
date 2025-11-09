@@ -1,10 +1,7 @@
-// export default {
-//   routes: [
-//     {
-//       method: "GET",
-//       path: "/experience/:id",                
-//       handler: "api::experience.findById",         
-//       config: { policies: [], middlewares: [] },
-//     },
-//   ],
-// };
+/**
+ * experience router
+ */
+
+import { factories } from "@strapi/strapi";
+
+export default factories.createCoreRouter("api::experience.experience");
