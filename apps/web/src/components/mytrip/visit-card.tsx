@@ -3,10 +3,11 @@
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin, ExternalLink, ArrowRight, X } from "lucide-react";
+import { MapPin, ArrowRight, X } from "lucide-react";
 
-import { Experience, Month, OpenState, categoryLabel, weekdayLabel } from "@/types/experience.type";
+import { Month, OpenState, categoryLabel, weekdayLabel } from "@/types/experience.type";
 import { computeOpenState, imgFallback, minutesToHHMM } from "@/lib/utils";
+import { Visit } from "@/types/visit.type";
 
 const cx = (...c: Array<string | false | null | undefined>) =>
   c.filter(Boolean).join(" ");
@@ -19,8 +20,8 @@ const seasonText = (start: Month, end: Month) =>
   start === end ? `Season: ${start}` : `Season: ${start}–${end}`;
 
 export interface VisitCardProps {
-  place: Experience;
-  onOpen?: (place: Experience) => void;
+  visit: Visit;
+  onOpen?: (visit: Visit) => void;
   onDismiss?: (key: string) => void;
   /** Wrapper element for semantics */
   as?: "div" | "article" | "section";
@@ -32,7 +33,7 @@ export interface VisitCardProps {
 }
 
 export default function VisitCard({
-  place,
+  visit,
   onOpen,
   onDismiss,
   as = "div",
@@ -42,6 +43,7 @@ export default function VisitCard({
   "aria-label": ariaLabel,
 }: VisitCardProps) {
   const Wrapper: any = as;
+  const place = visit.experience
 
   const current = now ?? new Date();
   const openState: OpenState = place.opening_hours
@@ -175,7 +177,7 @@ export default function VisitCard({
                   type="button"
                   onClick={(e) => {
                     e.stopPropagation();
-                    onOpen(place);
+                    onOpen(visit);
                   }}
                   className={cx(
                     "inline-flex items-center gap-2 rounded-full bg-rose-600 px-4 py-2 text-sm font-semibold text-white",

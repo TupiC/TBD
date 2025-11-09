@@ -15,8 +15,8 @@ export const toMapPoint = (exp: Experience, idx: number): MapPoint => ({
 export const toTimelineExp = (exp: Experience, idx: number): TimelineExp => ({
   ...exp,
   ...toMapPoint(exp, idx),
-  startDate: `2024-06-${String(idx + 1).padStart(2, "0")}`,
-  endDate:   `2024-06-${String(idx + 2).padStart(2, "0")}`,
+  startDate: `2025-11-${String(idx + 1).padStart(2, "0")}`,
+  endDate:   `2025-11-${String(idx + 2).padStart(2, "0")}`,
 });
 
 export const toMapPoints = (exps: Experience[]) => exps.map(toMapPoint);

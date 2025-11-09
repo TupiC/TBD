@@ -1,8 +1,9 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import MyMap from "../../components/ui/Map";
-import { MytripTimeline } from "@/components/ui/MytripTimeline";
-import { EXPS } from "@/dummy/dummy-data";
+import { TripTimeline } from "@/components/mytrip/trip-timeline";
+import { EXPS } from "@/dummy/dummy-experiences";
 import { toMapPoints, toTimelineExps } from "@/lib/mapper";
+import { DEMO_VISITS } from "@/dummy/dummy-visits";
 
 const Page = (): React.JSX.Element => {
 
@@ -30,7 +31,7 @@ const Page = (): React.JSX.Element => {
       </h1>
       <Tabs defaultValue="timeline" className="w-[100%] flex-1 flex flex-col">
         <TabsList
-          className="w-full flex gap-2 bg-gray-200 rounded-md "
+          className="w-full flex gap-2 rounded-md "
           style={{ marginBottom: "16px" }}
         >
           <TabsTrigger value="timeline" className="flex-1">
@@ -41,7 +42,7 @@ const Page = (): React.JSX.Element => {
           </TabsTrigger>
         </TabsList>
         <TabsContent className="flex" value="timeline">
-          <MytripTimeline exps={demoTimelineExps} />
+          <TripTimeline visits={DEMO_VISITS} />
         </TabsContent>
         <TabsContent className="flex" value="map">
           <MyMap points={demoExps} zoom={13} />

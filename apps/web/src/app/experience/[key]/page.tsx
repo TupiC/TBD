@@ -11,7 +11,7 @@ import {
   Navigation,
 } from "lucide-react";
 
-import { EXPS } from "@/dummy/dummy-data";
+import { EXPS } from "@/dummy/dummy-experiences";
 import type { Experience, Weekday, OpeningHoursDay } from "@/types/experience.type";
 import { categoryLabel } from "@/types/experience.type";
 import { minutesToHHMM } from "@/lib/utils";
@@ -146,9 +146,11 @@ function RootStep({ place }: { place: Experience }) {
       </div>
 
       {/* Weekday pills */}
-      <div className="mx-auto max-w-[640px] px-4 mt-4">
-        <OpeningHoursPills openingHours={place.opening_hours} />
-      </div>     
+      {place.opening_hours !== null && (
+        <div className="mx-auto max-w-[640px] px-4 mt-4">
+          <OpeningHoursPills openingHours={place.opening_hours} />
+        </div>
+      )} 
        {/* CTA buttons */}
       <div className="mx-auto max-w-[640px] px-4 mt-4 grid grid-cols-2 gap-4">
         <Link

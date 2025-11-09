@@ -1,3 +1,5 @@
+import { MapPoint } from "./map-point.type";
+
 export type Month =
   | 1 | 2 | 3 | 4 | 5 | 6
   | 7 | 8 | 9 | 10 | 11 | 12;
@@ -22,7 +24,17 @@ export const LABEL_EN: Record<Weekday, string> = {
   sa: "SA",
   su: "SU",
 };
-
+export const toMapPoint = (exp: Experience, idx: number): MapPoint => ({
+  id: exp.key ?? idx,
+  lat: exp.geo.lat,
+  lng: exp.geo.lon,
+  title: exp.name,
+  thumbnailUrl: exp.hero_image,
+  description: exp.summary,
+  category: exp.category,
+  url: exp.url,
+});
+export const toMapPoints = (exps: Experience[]) => exps.map(toMapPoint);
 export function dayFromDate(d: Date): Weekday {
   const MAP = ["su", "mo", "tu", "we", "th", "fr", "sa"] as const;
   type Idx = 0 | 1 | 2 | 3 | 4 | 5 | 6;
