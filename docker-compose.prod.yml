@@ -33,7 +33,6 @@ services:
             - ./apps/cms/types:/usr/src/app/apps/cms/types
             - ./package.json:/usr/src/app/package.json
             - ./yarn.lock:/usr/src/app/yarn.lock
-            - ./apps/cms/.env:/usr/src/app/apps/cms/.env
             - ./apps/cms/favicon.png:/usr/src/app/apps/cms/favicon.png
             - ./apps/cms/public/uploads:/usr/src/app/apps/cms/public/uploads
         ports:
