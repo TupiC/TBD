@@ -11,6 +11,10 @@ import { Experience } from "@/types/experience.type";
 import { Visit } from "@/types/visit.type";
 import { setExperiences, useExpStore } from "@/stores/exp-store";
 import { setVisits, useVisitStore } from "@/stores/visit-store";
+import { Button } from "@/components/ui/button";
+import { XCircle } from "lucide-react";
+import { stat } from "fs";
+import { redirect } from "next/navigation";
 
 // ⬇️ Import the map without SSR to avoid "window is not defined"
 const MyMap = dynamic(() => import("../../components/ui/Map"), { ssr: false });
@@ -21,8 +25,14 @@ const Page = (): React.JSX.Element => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const experiences = useExpStore((state) => state.experiences);
-    const visits = useVisitStore((state) => state.visits);
+    const clear = useVisitStore(state => state.clear);
 
+    const visits = useVisitStore((state) => state.visits);
+ 
+    const onReset = ()=> {
+      clear()
+      redirect("/")
+    }
     // Convert experiences to visits whenever experiences change
     const experiencesToVisits = (exps: Experience[]): Visit[] => {
         return exps.map((exp, index) => {
@@ -90,7 +100,8 @@ const Page = (): React.JSX.Element => {
     if (isLoading) {
         return (
             <main className="flex flex-col p-4 min-h-screen">
-                <Heading>Your Trip</Heading>
+                  <Heading>Your Trip</Heading>
+                
                 <div className="flex flex-1 justify-center items-center">
                     <p>Loading your trip...</p>
                 </div>
@@ -102,6 +113,7 @@ const Page = (): React.JSX.Element => {
         return (
             <main className="flex flex-col p-4 min-h-screen">
                 <Heading>Your Trip</Heading>
+                  
                 <div className="flex flex-1 justify-center items-center">
                     <p className="text-red-500">Error: {error}</p>
                 </div>
@@ -111,7 +123,13 @@ const Page = (): React.JSX.Element => {
 
     return (
         <main className="flex flex-col p-4 min-h-screen">
+
+          <div className="flex items-center justify-between">
             <Heading>Your Trip</Heading>
+              <button onClick={() => onReset()}>
+                <XCircle strokeWidth={2} className="size-5" />
+              </button>
+          </div>
 
             <Tabs
                 value={tab}

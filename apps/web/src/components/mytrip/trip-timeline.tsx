@@ -105,7 +105,7 @@ export const TripTimeline = ({
                 >
                     {/* GLOBAL vertical rail */}
                     <div
-                        className="top-0 bottom-0 absolute bg-white/70 w-0.5 pointer-events-none"
+                        className="top-0 bottom-0 absolute w-0.5 pointer-events-none bg-sc-primary"
                         style={{ left: "calc(var(--left-col) / 2 - 1px)" }}
                     />
 
