@@ -46,4 +46,21 @@ export default {
             ctx.throw(500, err.message);
         }
     },
+    findById: async (ctx) => {
+        const documentId = (ctx.params?.id ?? "").toString().trim();
+        if (!documentId) return ctx.badRequest("id is required");
+
+        const { locale } = ctx.request.query as { locale?: string };
+
+        const doc = await strapi
+            .documents("api::experience.experience")
+            .findOne({
+            documentId,             
+            status: "published",
+            ...(locale ? { locale } : {}),
+            });
+
+        if (!doc) return ctx.notFound(`Experience with id "${documentId}" not found`);
+        ctx.body = doc;
+    }
 };
