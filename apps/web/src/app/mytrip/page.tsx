@@ -1,45 +1,47 @@
+// app/mytrip/page.tsx
+"use client";
+
+import { useState } from "react";
+import dynamic from "next/dynamic";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import MyMap from "../../components/ui/Map";
 import { TripTimeline } from "@/components/mytrip/trip-timeline";
 import { EXPS } from "@/dummy/dummy-experiences";
-import { toMapPoints, toTimelineExps } from "@/lib/mapper";
+import { toMapPoints } from "@/lib/mapper";
 import { DEMO_VISITS } from "@/dummy/dummy-visits";
+import Heading from "@/components/typography/heading";
+
+// ⬇️ Import the map without SSR to avoid "window is not defined"
+const MyMap = dynamic(() => import("../../components/ui/Map"), { ssr: false });
 
 const Page = (): React.JSX.Element => {
-
+  const [tab, setTab] = useState<"timeline" | "map">("timeline");
   const demoExps = toMapPoints(EXPS);
-  const demoTimelineExps = toTimelineExps(EXPS);
 
   return (
-    <main
-      className="min-h-screen flex flex-col p-4 bg-[#A52522]"
-    >
-      <h1
-        className="text-white"
-        style={{
-          fontSize: "32px",
-          marginBottom: "16px",
-        }}
+    <main className="min-h-screen flex flex-col p-4 bg-[#A52522]">
+      <Heading>Your Trip</Heading>
+
+      <Tabs
+        value={tab}
+        onValueChange={(v) => setTab(v as "timeline" | "map")}
+        className="w-full flex-1 flex flex-col overflow-hidden"
       >
-        Your Trip
-      </h1>
-      <Tabs defaultValue="timeline" className="w-[100%] flex-1 flex flex-col">
-        <TabsList
-          className="w-full flex gap-2 rounded-md "
-          style={{ marginBottom: "16px" }}
-        >
-          <TabsTrigger value="timeline" className="flex-1">
-            Timeline
-          </TabsTrigger>
-          <TabsTrigger value="map" className="flex-1">
-            Map
-          </TabsTrigger>
+        <TabsList className="w-full flex gap-2 rounded-md mb-4">
+          <TabsTrigger value="timeline" className="flex-1">Timeline</TabsTrigger>
+          <TabsTrigger value="map" className="flex-1">Map</TabsTrigger>
         </TabsList>
-        <TabsContent className="flex" value="timeline">
+
+        <TabsContent value="timeline" className="flex flex-1 min-h-0">
           <TripTimeline visits={DEMO_VISITS} />
         </TabsContent>
-        <TabsContent className="flex" value="map">
-          <MyMap points={demoExps} zoom={13} />
+
+        <TabsContent value="map" className="flex flex-1 min-h-0">
+          {/* Mount only when visible; give it height and rounded corners */}
+          {tab === "map" && (
+            <div className="flex-1 min-h-[320px]" style={{ borderRadius: 8, overflow: "hidden" }}>
+              <MyMap points={demoExps} zoom={13} />
+            </div>
+          )}
         </TabsContent>
       </Tabs>
     </main>

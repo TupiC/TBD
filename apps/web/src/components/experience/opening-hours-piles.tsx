@@ -62,12 +62,12 @@ export default function OpeningHoursPills({
         ].join(" ");
 
         return (
-          <div key={day} className={cls} aria-label={`${getLabel(day, locale)} ${isClosed ? "closed" : "open"}`}  style={isSelected ? { backgroundColor: "#A52522", color: "#fff" } : undefined}>
+          <div key={day} className={`${cls} p-1`} aria-label={`${getLabel(day, locale)} ${isClosed ? "closed" : "open"}`}  style={isSelected ? { backgroundColor: "#A52522", color: "#fff" } : undefined}>
             <div className="text-sm font-bold tracking-wide leading-none">{getLabel(day, locale)}</div>
             {isClosed ? (
               <div className="text-base leading-none mt-1">×</div>
             ) : (
-              <div className="text-sm leading-none mt-1">
+              <div className="text-xs leading-none mt-1">
                 {hhmmToLabel(oh.from)}-{hhmmToLabel(oh.to)}
               </div>
             )}

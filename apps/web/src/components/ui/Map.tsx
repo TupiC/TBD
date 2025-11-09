@@ -1,8 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
+import React, { useEffect, useRef, useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-
 
 export type MapPoint = {
   id: string | number;
@@ -24,7 +22,7 @@ type PointMapProps = {
 };
 
 export default function MyMap({
-  center, // [47.80094, 13.04458] is salzburg
+  center,
   zoom = 13,
   points = [],
   height = "100%",
@@ -32,32 +30,20 @@ export default function MyMap({
 }: PointMapProps): JSX.Element {
   const pts = points ?? [];
 
-  // compute centroid and bounds
+  // ----- compute center/bounds -----
   let initialCenter: [number, number];
-  let initialBounds: [[number, number], [number, number]] | undefined =
-    undefined;
+  let initialBounds: [[number, number], [number, number]] | undefined;
 
   if (center) {
     initialCenter = center;
   } else if (pts.length > 0) {
-    // centroid (average)
     const sum = pts.reduce(
-      (acc, p) => {
-        acc.lat += Number(p.lat) || 0;
-        acc.lng += Number(p.lng) || 0;
-        return acc;
-      },
+      (acc, p) => ({ lat: acc.lat + (Number(p.lat) || 0), lng: acc.lng + (Number(p.lng) || 0) }),
       { lat: 0, lng: 0 }
     );
-    const avgLat = sum.lat / pts.length;
-    const avgLng = sum.lng / pts.length;
-    initialCenter = [avgLat, avgLng];
+    initialCenter = [sum.lat / pts.length, sum.lng / pts.length];
 
-    // bounds (min/max)
-    let minLat = Infinity;
-    let maxLat = -Infinity;
-    let minLng = Infinity;
-    let maxLng = -Infinity;
+    let minLat = Infinity, maxLat = -Infinity, minLng = Infinity, maxLng = -Infinity;
     pts.forEach((p) => {
       const lat = Number(p.lat) || 0;
       const lng = Number(p.lng) || 0;
@@ -67,123 +53,101 @@ export default function MyMap({
       if (lng > maxLng) maxLng = lng;
     });
     if (minLat !== Infinity && minLng !== Infinity) {
-      initialBounds = [
-        [minLat, minLng],
-        [maxLat, maxLng],
-      ];
+      initialBounds = [[minLat, minLng], [maxLat, maxLng]];
     }
   } else {
-    // fallback: Salzburg coordinates
-    initialCenter = [47.80094, 13.04458];
+    initialCenter = [47.80094, 13.04458]; // Salzburg
   }
 
+  // ----- leaflet icon setup (client only) -----
   const [markerIcon, setMarkerIcon] = useState<any | null>(null);
-
   useEffect(() => {
     let mounted = true;
-    // Load leaflet library on the client and programmatically insert the CSS link
     import("leaflet").then((leafletModule) => {
       const L = (leafletModule as any).default ?? leafletModule;
       const icon = L.icon({
         iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-        iconRetinaUrl:
-          "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-        shadowUrl:
-          "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+        iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+        shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
         iconSize: [25, 41],
         iconAnchor: [12, 41],
         popupAnchor: [0, -36],
         shadowSize: [41, 41],
       });
-      // Also ensure Leaflet's default icon is configured. This prevents cases where
-      // Marker creation fails because the library's default options.icon is missing
-      // (observed when the component is unmounted and remounted in Next.js/Turbopack).
       try {
-        if (
-          L.Icon &&
-          L.Icon.Default &&
-          typeof L.Icon.Default.mergeOptions === "function"
-        ) {
-          L.Icon.Default.mergeOptions({
-            iconUrl:
-              "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-            iconRetinaUrl:
-              "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-            shadowUrl:
-              "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-          });
-        }
-      } catch (e) {
-        // ignore - defensive
-      }
-
+        L.Icon?.Default?.mergeOptions?.({
+          iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+          iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+          shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+        });
+      } catch {}
       if (mounted) setMarkerIcon(icon);
     });
 
-    // add CSS via CDN link to avoid TS module resolution for CSS files
-    const existing = document.querySelector("link[href*='leaflet']");
-    if (!existing) {
+    if (!document.querySelector("link[href*='leaflet']")) {
       const link = document.createElement("link");
       link.rel = "stylesheet";
       link.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
       document.head.appendChild(link);
     }
+    return () => { mounted = false; };
+  }, []);
 
+  // ----- keep map sized when inside hidden tabs / resizes -----
+  const mapRef = useRef<any>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ro = new ResizeObserver(() => {
+      if (mapRef.current) {
+        mapRef.current.invalidateSize(false);
+      }
+    });
+    if (containerRef.current) ro.observe(containerRef.current);
+    const onResize = () => mapRef.current?.invalidateSize(false);
+    window.addEventListener("resize", onResize);
     return () => {
-      mounted = false;
+      ro.disconnect();
+      window.removeEventListener("resize", onResize);
     };
   }, []);
 
-  // Cast dynamic components to any to avoid prop typing mismatches from react-leaflet
+  // ----- react-leaflet any casts -----
   const MapContainerAny = MapContainer as any;
   const TileLayerAny = TileLayer as any;
   const MarkerAny = Marker as any;
   const PopupAny = Popup as any;
 
-  // ensure height is a valid CSS value: number -> pixels
   const cssHeight = typeof height === "number" ? `${height}px` : height;
 
-  // Prepare props for the MapContainer:
-  // - If the caller provided an explicit `center` prop, pass `center` so we keep that behavior.
-  // - Otherwise, if we have multiple points, pass computed `initialBounds` so the map fits all markers.
-  // - If there's only one point, pass the computed centroid as `center` so we don't end up with a degenerate bounds zoom.
   const mapInitProps: any = (() => {
     if (center) return { center: initialCenter };
-    if (initialBounds && pts.length > 1)
-      return { bounds: initialBounds, boundsOptions: { padding: [20, 20] } };
+    if (initialBounds && pts.length > 1) return { bounds: initialBounds, boundsOptions: { padding: [20, 20] } };
     return { center: initialCenter };
   })();
 
   return (
-    <div style={{ width: "100%", height: cssHeight, flex: 1 }}>
+    <div ref={containerRef} style={{ width: "100%", height: cssHeight, flex: 1, minHeight: 0 }}>
       <MapContainerAny
         {...mapInitProps}
-        // ensure bounds are applied after the map is created (works around cases where
-        // passing `bounds` as a prop alone doesn't trigger fitting)
         whenCreated={(map: any) => {
+          mapRef.current = map;
           if (!center && initialBounds && pts.length > 1) {
-            try {
-              map.fitBounds(initialBounds, { padding: [20, 20] });
-            } catch (e) {
-              // ignore - map may not support fitBounds in some test envs
-            }
+            try { map.fitBounds(initialBounds, { padding: [20, 20] }); } catch {}
           }
+          // pulses to handle creation in hidden tabs
+          requestAnimationFrame(() => map.invalidateSize());
+          setTimeout(() => map.invalidateSize(), 150);
         }}
         zoom={zoom}
         scrollWheelZoom={!disableScrollWheel}
         style={{ width: "100%", height: cssHeight }}
       >
         <TileLayerAny
-          url={"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"}
-          attribution={
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          }
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
 
-        {/* Only render markers after we've initialized the Leaflet icon. Rendering
-            Marker components before the icon is ready can cause Leaflet internals to
-            attempt to call createIcon on an undefined options.icon (seen on remount).
-            Waiting briefly for markerIcon prevents the runtime error. */}
         {markerIcon &&
           pts.map((p) => (
             <MarkerAny key={p.id} position={[p.lat, p.lng]} icon={markerIcon}>
@@ -194,20 +158,10 @@ export default function MyMap({
                     <img
                       src={p.thumbnailUrl}
                       alt={p.title ?? "thumbnail"}
-                      style={{
-                        width: "100%",
-                        height: 120,
-                        objectFit: "cover",
-                        borderRadius: 6,
-                        marginBottom: 6,
-                      }}
+                      style={{ width: "100%", height: 120, objectFit: "cover", borderRadius: 6, marginBottom: 6 }}
                     />
                   )}
-                  {p.description && (
-                    <p style={{ margin: 0, fontSize: 14, lineHeight: 1.4 }}>
-                      {p.description}
-                    </p>
-                  )}
+                  {p.description && <p style={{ margin: 0, fontSize: 14, lineHeight: 1.4 }}>{p.description}</p>}
                 </div>
               </PopupAny>
             </MarkerAny>
