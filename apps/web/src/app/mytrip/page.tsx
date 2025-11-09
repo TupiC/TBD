@@ -59,10 +59,16 @@ const Page = (): React.JSX.Element => {
             try {
                 setIsLoading(true);
                 setError(null);
-                console.log(days, date, type);
+                if (!date || !days || !type) {
+                    throw new Error("Missing onboarding data");
+                }
+                const startDate = new Date(date).toISOString();
+                const endDate = new Date(date);
+                endDate.setDate(endDate.getDate() + parseInt(days));
+                const endDateISO = endDate.toISOString();
 
                 const response = await fetch(
-                    `http://localhost:1337/api/experience/filter?startDate=$Z&endDate=2025-03-09T20:31:27.243Z&categories=outdoor`
+                    `http://localhost:1337/api/experience/filter?startDate=${startDate}&endDate=${endDateISO}&categories=${type}`
                 );
 
                 if (!response.ok) {

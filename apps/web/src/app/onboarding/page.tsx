@@ -88,12 +88,11 @@ const Page = (): React.JSX.Element => {
                     placeholder="Art"
                     items={
                         <>
-                            <SelectItem value="culture">Kulturell</SelectItem>
-                            <SelectItem value="food">Gastronomisch</SelectItem>
-                            <SelectItem value="sport">Sportlich</SelectItem>
-                            <SelectItem value="couple">Paarurlaub</SelectItem>
-                            <SelectItem value="family">
-                                Familie & Kids
+                            <SelectItem value="excursion">Ausflug</SelectItem>
+                            <SelectItem value="outdoor">Draußen</SelectItem>
+                            <SelectItem value="trail">Wandern</SelectItem>
+                            <SelectItem value="square">
+                                Stadt & Plätze
                             </SelectItem>
                         </>
                     }

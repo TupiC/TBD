@@ -56,7 +56,7 @@ export default function MapTileLeaflet({
 
     return (
         <div
-            className={`relative w-full overflow-hidden rounded-xl ${className ?? ""}`}
+            className={`relative w-full overflow-hidden rounded-tl-xl ${className ?? ""}`}
             style={{ height: cssHeight }}
         >
             {hideAttribution}
