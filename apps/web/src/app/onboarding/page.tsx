@@ -120,9 +120,9 @@ const Page = (): React.JSX.Element => {
 
   if (currentStepIndex === 0) {
     return (
-      <div>
+      <div className={`${loading ? "h-dvh w-screen overflow-hidden" : ""}`}>
         {loading && (
-          <div className="h-dvh w-screen flex justify-center items-center">
+          <div className="h-full w-full flex justify-center items-center">
             <AnimationIcon
               duration={0.35}
               className="w-10 h-10"
