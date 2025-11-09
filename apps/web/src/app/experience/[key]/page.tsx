@@ -19,6 +19,7 @@ import OpeningHoursPills from "@/components/experience/opening-hours-piles";
 import { formatDuration } from "@/lib/date-utils";
 import { Visit } from "@/types/visit.type";
 import { useExpStore } from "@/stores/exp-store";
+import { useVisitStore } from "@/stores/visit-store";
 
 type Step = {
     key: string;
@@ -46,7 +47,7 @@ const categoryDe: Record<string, string> = {
 // --- helpers
 const buildRouteUrl = (e: Experience) =>
     `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
-        `${e.address.street || ""} ${e.address.postal_code || ""} ${e.address.locality || ""}`
+        `${e.address?.street || ""} ${e.address?.postal_code || ""} ${e.address?.locality || ""}`
     )}&destination_place_id=&travelmode=walking`;
 
 const cx = (...c: Array<string | false | null | undefined>) =>
@@ -235,10 +236,11 @@ const Page = (): React.JSX.Element => {
     const params = useParams<{ key: string }>();
     const [currentStepIndex] = useState(0);
     const experiences = useExpStore((state) => state.experiences);
+    const visits = useVisitStore((state) => state.visits);
 
     console.log("Exp in detail page:", experiences);
 
-    const visit = experiences.find((e) => e.key === params.key) as
+    const visit = visits.find((e) => e.experience.key === params.key) as
         | Visit
         | undefined;
 

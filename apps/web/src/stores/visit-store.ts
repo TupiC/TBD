@@ -1,5 +1,6 @@
 import { Visit } from "@/types/visit.type";
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 type VisitState = {
     visits: Visit[];
@@ -11,31 +12,38 @@ type VisitState = {
     clear: () => void;
 };
 
-export const useVisitStore = create<VisitState>((set, get) => ({
-    visits: [],
+export const useVisitStore = create<VisitState>()(
+    persist(
+        (set, get) => ({
+            visits: [],
 
-    setVisits: (items: Visit[]) => set({ visits: items }),
+            setVisits: (items: Visit[]) => set({ visits: items }),
 
-    addVisit: (item: Visit) =>
-        set((state) => ({ visits: [...state.visits, item] })),
+            addVisit: (item: Visit) =>
+                set((state) => ({ visits: [...state.visits, item] })),
 
-    updateVisit: (id: string, patch: Partial<Visit>) =>
-        set((state) => ({
-            visits: state.visits.map((v) =>
-                v.experience.id === id ? { ...v, ...patch } : v
-            ),
-        })),
+            updateVisit: (id: string, patch: Partial<Visit>) =>
+                set((state) => ({
+                    visits: state.visits.map((v) =>
+                        v.experience.id === id ? { ...v, ...patch } : v
+                    ),
+                })),
 
-    removeVisit: (id: string) =>
-        set((state) => ({
-            visits: state.visits.filter((v) => v.experience.id !== id),
-        })),
+            removeVisit: (id: string) =>
+                set((state) => ({
+                    visits: state.visits.filter((v) => v.experience.id !== id),
+                })),
 
-    getVisitById: (id: string) =>
-        get().visits.find((v) => v.experience.id === id),
+            getVisitById: (id: string) =>
+                get().visits.find((v) => v.experience.id === id),
 
-    clear: () => set({ visits: [] }),
-}));
+            clear: () => set({ visits: [] }),
+        }),
+        {
+            name: "visit-storage",
+        }
+    )
+);
 
 export const setVisits = (items: Visit[]) => {
     useVisitStore.getState().setVisits(items);
