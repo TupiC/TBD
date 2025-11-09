@@ -20,7 +20,7 @@ export const ExperienceCard = ({
       <div
         className="w-[100%] h-[100%] rounded-[8px]"
         style={{
-          backgroundColor: "rgba(0, 0, 0, 0.6)",
+          backgroundColor: "rgba(0, 0, 0, 0.8)",
           padding: "8px",
           color: "white",
           display: "flex",
@@ -42,6 +42,24 @@ export const ExperienceCard = ({
           {exp.title}
         </h3>
         <span>{exp.startDate}</span>
+
+        <button
+          style={{
+            position: "absolute",
+            bottom: "16px",
+            right: "16px",
+            backgroundColor: "#ffffffff",
+            color: "#000000ff",
+            border: "none",
+            width: "32px",
+            height: "24px",
+            borderRadius: "16px",
+            cursor: "pointer",
+            fontSize: "16px",
+          }}
+        >
+          {"->"}
+        </button>
       </div>
     </div>
   );
