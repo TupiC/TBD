@@ -1,4 +1,9 @@
-# Team TDB
+![Hero image](screenshots/hero.png "Hero")
+Nudged Visitors enjoy one more attraction.
+
+Allow for an easy way to nudge and assist visitors and tourists of Salzburg to find and plan their days by themselves even before booking their stay or during their stay and maybe even enjoy one more attraction.
+
+![Steps](screenshots/steps.png "Hero")
 
 ## Challenge: Salzburg Card
 
@@ -36,13 +41,13 @@ See apps/cms/.env.example for reference.
 
 ```json
 {
-    "data": {
-        "start_date": "2025-11-11T00:00:00.000Z",
-        "end_date": "2025-11-19T00:00:00.000Z",
-        "experiences": {
-            "connect": ["dw9aongvv0ywpmadzp8bq04n", "szg4bby9itglyzylxl4h4umh"]
-        }
+  "data": {
+    "start_date": "2025-11-11T00:00:00.000Z",
+    "end_date": "2025-11-19T00:00:00.000Z",
+    "experiences": {
+      "connect": ["dw9aongvv0ywpmadzp8bq04n", "szg4bby9itglyzylxl4h4umh"]
     }
+  }
 }
 ```
 
