@@ -1,6 +1,6 @@
 const styles = {
   h1: `text-[32px] font-merriweather-italic font-bold`,
-  h3: "font-roboto font-medium text-[20px] text-sc-subheader",
+  h3: "font-roboto text-[20px] text-sc-subheader",
 };
 
 const Heading = ({

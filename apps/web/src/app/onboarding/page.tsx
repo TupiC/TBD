@@ -1,29 +1,21 @@
 "use client";
+import ContentPage from "@/components/onboarding/content";
 import RootPage from "@/components/onboarding/root";
 import { useState } from "react";
 
-type Step = {
-  key: string;
-  nextBtnSize: "small" | "large";
-  component: React.JSX.Element;
-};
-
 const Page = (): React.JSX.Element => {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const steps: Step[] = [
-    {
-      key: "root",
-      nextBtnSize: "large",
-      component: <RootPage />,
-    },
+  const next = () => {
+    setCurrentStepIndex(currentStepIndex + 1);
+  };
+
+  const steps: JSX.Element[] = [
+    <RootPage key="root" next={() => next()} />,
+    <ContentPage key="content1" next={() => next()} />,
   ];
   const currentStep = steps[currentStepIndex];
 
-  return (
-    <main className="h-screen w-screen">
-      {currentStep && currentStep.component}
-    </main>
-  );
+  return <main className="h-dvh w-screen">{currentStep && currentStep}</main>;
 };
 
 export default Page;

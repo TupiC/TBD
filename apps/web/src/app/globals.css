@@ -8,6 +8,8 @@
   --font-roboto: var(--font-roboto);
   --font-roboto-italic: var(--font-roboto-italic);
   --color-sc-subheader: #595959;
+  --color-sc-primary: #a52522;
+  --color-sc-gray: #efefef;
 }
 
 @custom-variant dark (&:is(.dark *));
