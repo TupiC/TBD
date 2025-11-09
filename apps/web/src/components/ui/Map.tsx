@@ -1,28 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 
-// Dynamically import react-leaflet components so they are only loaded on the client
-// This avoids "window is not defined" during server-side evaluation/build.
-const MapContainer = dynamic(
-  () => import("react-leaflet").then((mod) => mod.MapContainer),
-  { ssr: false }
-);
-const TileLayer = dynamic(
-  () => import("react-leaflet").then((mod) => mod.TileLayer),
-  {
-    ssr: false,
-  }
-);
-const Marker = dynamic(
-  () => import("react-leaflet").then((mod) => mod.Marker),
-  {
-    ssr: false,
-  }
-);
-const Popup = dynamic(() => import("react-leaflet").then((mod) => mod.Popup), {
-  ssr: false,
-});
 
 export type MapPoint = {
   id: string | number;

@@ -1,4 +1,4 @@
-import { TimelineExp } from "./MytripTimeline";
+import { TimelineExp } from "@/types/map-point.type";
 
 type ExperienceCardProps = {
   exp: TimelineExp;

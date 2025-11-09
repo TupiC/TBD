@@ -1,27 +1,27 @@
 services:
-    cms:
-        container_name: cms
-        build:
-            context: .
-            dockerfile: apps/cms/Dockerfile
-        image: strapi:latest
-        restart: unless-stopped
-        env_file: apps/cms/.env
-        volumes:
-            - ./apps/cms/config:/usr/src/app/apps/cms/config
-            - ./apps/cms/src:/usr/src/app/apps/cms/src
-            - ./apps/cms/types:/usr/src/app/apps/cms/types
-            - ./package.json:/usr/src/app/package.json
-            - ./yarn.lock:/usr/src/app/yarn.lock
-            - ./apps/cms/.env:/usr/src/app/apps/cms/.env
-            - ./apps/cms/favicon.png:/usr/src/app/apps/cms/favicon.png
-            - ./apps/cms/public/uploads:/usr/src/app/apps/cms/public/uploads
-        ports:
-            - "1337:1337"
-        networks:
-            - strapi
-        depends_on:
-            - strapiDB
+    # cms:
+    #     container_name: cms
+    #     build:
+    #         context: .
+    #         dockerfile: apps/cms/Dockerfile
+    #     image: strapi:latest
+    #     restart: unless-stopped
+    #     env_file: apps/cms/.env
+    #     volumes:
+    #         - ./apps/cms/config:/usr/src/app/apps/cms/config
+    #         - ./apps/cms/src:/usr/src/app/apps/cms/src
+    #         - ./apps/cms/types:/usr/src/app/apps/cms/types
+    #         - ./package.json:/usr/src/app/package.json
+    #         - ./yarn.lock:/usr/src/app/yarn.lock
+    #         - ./apps/cms/.env:/usr/src/app/apps/cms/.env
+    #         - ./apps/cms/favicon.png:/usr/src/app/apps/cms/favicon.png
+    #         - ./apps/cms/public/uploads:/usr/src/app/apps/cms/public/uploads
+    #     ports:
+    #         - "1337:1337"
+    #     networks:
+    #         - strapi
+    #     depends_on:
+    #         - strapiDB
 
     strapiDB:
         container_name: strapiDB

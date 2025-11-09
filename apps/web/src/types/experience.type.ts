@@ -4,6 +4,31 @@ export type Month =
 
 export type Weekday = "mo" | "tu" | "we" | "th" | "fr" | "sa" | "su";
 
+export const LABEL_DE: Record<Weekday, string> = {
+  mo: "MO",
+  tu: "DI",
+  we: "MI",
+  th: "DO",
+  fr: "FR",
+  sa: "SA",
+  su: "SO",
+};
+export const LABEL_EN: Record<Weekday, string> = {
+  mo: "MO",
+  tu: "TU",
+  we: "WE",
+  th: "TH",
+  fr: "FR",
+  sa: "SA",
+  su: "SU",
+};
+
+export function dayFromDate(d: Date): Weekday {
+  const MAP = ["su", "mo", "tu", "we", "th", "fr", "sa"] as const;
+  type Idx = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+  return MAP[d.getDay() as Idx];
+}
+
 export interface OpeningHoursDay {
   /** Minutes after midnight, e.g. 930 = 9:30 */
   from: number;
@@ -11,7 +36,7 @@ export interface OpeningHoursDay {
   to: number;
 }
 
-export type OpeningHours = Record<Weekday, OpeningHoursDay>;
+export type OpeningHours = Record<Weekday, OpeningHoursDay> | null;
 
 export interface Address {
   street: string;
