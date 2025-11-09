@@ -9,6 +9,7 @@ import {
   Accessibility,
   Globe,
   Navigation,
+  Clock
 } from "lucide-react";
 
 import { EXPS } from "@/dummy/dummy-experiences";
@@ -17,12 +18,12 @@ import { categoryLabel } from "@/types/experience.type";
 import { minutesToHHMM } from "@/lib/utils";
 import GalleryWithMap from "@/components/ui/gallery-with-map";
 import OpeningHoursPills from "@/components/experience/opening-hours-piles";
+import { formatDuration } from "@/lib/date-utils";
+import { Visit } from "@/types/visit.type";
+import { DEMO_VISITS } from "@/dummy/dummy-visits";
 
 type Step = { key: string; nextBtnSize?: "large" | "small"; component: React.ReactNode };
 
-const deWeekday: Record<Weekday, string> = {
-  mo: "MO", tu: "DI", we: "MI", th: "DO", fr: "FR", sa: "SA", su: "SO",
-};
 const accessibilityDe: Record<NonNullable<Experience["accessibility_state"]>, string> = {
   full: "barrierefrei",
   partly: "teilweise",
@@ -44,7 +45,6 @@ const buildRouteUrl = (e: Experience) =>
   )}&destination_place_id=&travelmode=walking`;
 
 const cx = (...c: Array<string | false | null | undefined>) => c.filter(Boolean).join(" ");
-const cardRing = "ring-1 ring-black/5 dark:ring-white/10";
 
 const imgFallback =
   "data:image/svg+xml;charset=utf-8," +
@@ -52,39 +52,41 @@ const imgFallback =
     `<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='630'><rect width='100%' height='100%' fill='#e5e7eb'/></svg>`
   );
 
-function HoursPill({
-  label,
-  day,
-  active = false,
-  disabled = false,
-}: {
-  label: string;
-  day?: OpeningHoursDay | null;
-  active?: boolean;
-  disabled?: boolean;
-}) {
-  const base = "px-4 py-3 rounded-2xl text-center min-w-[72px]";
-  if (disabled) {
-    return (
-      <div className={cx(base, "bg-neutral-200 text-neutral-400 line-through")}>{label}</div>
-    );
-  }
-  return (
-    <div
-      className={cx(
-        base,
-        active ? "bg-rose-700 text-white" : "bg-neutral-200 text-neutral-900"
-      )}
-    >
-      <div className="text-xs font-semibold tracking-wide">{label}</div>
-      <div className="text-sm">{day ? `${minutesToHHMM(day.from)}-${minutesToHHMM(day.to)}` : "—"}</div>
-    </div>
-  );
-}
+// function HoursPill({
+//   label,
+//   day,
+//   active = false,
+//   disabled = false,
+// }: {
+//   label: string;
+//   day?: OpeningHoursDay | null;
+//   active?: boolean;
+//   disabled?: boolean;
+// }) {
+//   const base = "px-4 py-3 rounded-2xl text-center min-w-[72px]";
+//   if (disabled) {
+//     return (
+//       <div className={cx(base, "bg-neutral-200 text-neutral-400 line-through")}>{label}</div>
+//     );
+//   }
+
+//   return (
+//     <div
+//       className={cx(
+//         base,
+//         active ? "bg-rose-700 text-white" : "bg-neutral-200 text-neutral-900"
+//       )}
+//     >
+//       <div className="text-xs font-semibold tracking-wide">{label}</div>
+//       <div className="text-sm">{day ? `${minutesToHHMM(day.from)}-${minutesToHHMM(day.to)}` : "—"}</div>
+//     </div>
+//   );
+// }
 
 /* -------------------------------- Root Step -------------------------------- */
 
-function RootStep({ place }: { place: Experience }) {
+function RootStep({ visit }: { visit: Visit }) {
+  const place: Experience = visit.experience;
   const router = useRouter();
   const today = useMemo(() => {
     const n = new Date().getDay(); // 0..6 Sun..Sat
@@ -93,6 +95,8 @@ function RootStep({ place }: { place: Experience }) {
     return order[(n + 6) % 7];
   }, []);
 
+
+  console.log(place)
   // derive 3 images (grid like mock)
   const [hero, i2, i3] = [
     place.hero_image || imgFallback,
@@ -101,6 +105,7 @@ function RootStep({ place }: { place: Experience }) {
   ];
 
   const oh = place.opening_hours;
+  const durationLabel = formatDuration((visit?.end ?? 0) - (visit?.start ?? 0));
 
   return (
     <div className="min-h-screen bg-[#EFEFEF]">
@@ -130,6 +135,11 @@ function RootStep({ place }: { place: Experience }) {
               {accessibilityDe[place.accessibility_state] ?? place.accessibility_state}
             </span>
           )}
+          {/* Duration */}
+            <span className="inline-flex items-center gap-2 rounded-full bg-[#8B2C2A] text-white px-4 py-2">
+              <Clock className="h-4 w-4" aria-hidden />
+              {durationLabel}
+            </span>
         </div>
       </div>
 
@@ -211,14 +221,14 @@ const Page = (): React.JSX.Element => {
   const params = useParams<{ key: string }>();
   const [currentStepIndex] = useState(0);
 
-  const place = EXPS.find((e) => e.key === params.key) as Experience | undefined;
+  const visit = DEMO_VISITS.find((e) => e.experience.key === params.key) as Visit | undefined;
 
   const steps: Step[] = [
     {
       key: "root",
       nextBtnSize: "large",
-      component: place ? (
-        <RootStep place={place} />
+      component: visit ? (
+        <RootStep visit={visit} />
       ) : (
         <main className="h-screen w-screen grid place-items-center">
           <div className="text-center">

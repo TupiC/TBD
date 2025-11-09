@@ -3,11 +3,12 @@
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin, ArrowRight, X } from "lucide-react";
+import { MapPin, ArrowRight, X, Clock } from "lucide-react";
 
 import { Month, OpenState, categoryLabel, weekdayLabel } from "@/types/experience.type";
 import { computeOpenState, imgFallback, minutesToHHMM } from "@/lib/utils";
 import { Visit } from "@/types/visit.type";
+import { formatDuration } from "@/lib/date-utils";
 
 const cx = (...c: Array<string | false | null | undefined>) =>
   c.filter(Boolean).join(" ");
@@ -30,6 +31,7 @@ export interface VisitCardProps {
   "aria-label"?: string;
   /** Optional density */
   size?: "default" | "compact";
+  
 }
 
 export default function VisitCard({
@@ -44,7 +46,7 @@ export default function VisitCard({
 }: VisitCardProps) {
   const Wrapper: any = as;
   const place = visit.experience
-
+  const durationLabel = formatDuration((visit?.end ?? 0) - (visit?.start ?? 0));
   const current = now ?? new Date();
   const openState: OpenState = place.opening_hours
   ? computeOpenState(place.opening_hours, current)
@@ -122,6 +124,12 @@ export default function VisitCard({
               {categoryLabel[place.category] ?? "Experience"}
             </span>
 
+             {/* Duration */}
+            <span className="inline-flex items-center gap-1 rounded-full bg-white/10 px-3 py-1 text-sm text-white/90">
+              <Clock className="h-4 w-4 opacity-90" aria-hidden />
+              {durationLabel}
+            </span>
+
             <span
                 className={cx(
                   "inline-flex items-center rounded-full px-3 py-1 text-sm font-medium",
@@ -137,7 +145,7 @@ export default function VisitCard({
                   ? `Open · until ${minutesToHHMM(openState.closesAt)}`
                   : openState.state === "closed" && openState.nextOpens
                   ? `Closed · ${weekdayLabel[openState.nextOpens.day]} ${minutesToHHMM(openState.nextOpens.from)}`
-                  : "Hours unknown"}
+                  : ""}
               </span>
               <span className="inline-flex items-center rounded-full bg-white/10 px-3 py-1 text-sm text-white/90">
               {seasonText(place.start_month, place.end_month)}

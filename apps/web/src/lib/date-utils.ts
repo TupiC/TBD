@@ -38,3 +38,11 @@ export function formatTime(ts: number, locale = "de-AT"): string {
     new Date(ts)
   );
 }
+export const formatDuration = (ms: number): string => {
+  const mins = Math.max(0, Math.round(ms / 60000));
+    const h = Math.floor(mins / 60);
+    const m = mins % 60;
+    if (h && m) return `${h}h ${m}m`;
+    if (h) return `${h}h`;
+    return `${m}m`;
+  };

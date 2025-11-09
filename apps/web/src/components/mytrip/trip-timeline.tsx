@@ -109,13 +109,13 @@ export const TripTimeline = ({ visits }: TripTimelineProps): React.JSX.Element =
                     style={{ gridTemplateColumns: "var(--left-col) 1fr" }}
                   >
 
-<div className="relative">
-  {/* one place to tweak sizes if you ever change button/bubble heights */}
-  <div
-    className="absolute inset-0"
-    style={{
-      ["--stack-offset" as any]: "58px",
-    }}
+              <div className="relative">
+                {/* one place to tweak sizes if you ever change button/bubble heights */}
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    ["--stack-offset" as any]: "58px",
+                  }}
   >
                     {/* time bubble — exactly centered on the row/card */}
                     <div

@@ -95,7 +95,7 @@ export const EXPS = [
       },
       su: {
         from: 930,
-        to: 1700,
+        to: 2000,
       },
     },
     adults_only: false,
