@@ -156,3 +156,42 @@ a {
     @apply bg-background text-foreground;
   }
 }
+
+.exps-timeline {
+  position: relative;
+  padding-left: 28px;
+}
+
+.exps-timeline::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 0px;
+  bottom: 0px;
+  width: 3px;
+  background: #ffffff;
+  border-radius: 1px;
+  display: block;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.exp-timeline-card-item {
+  position: relative;
+}
+.exp-timeline-card-item::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -18px;
+  transform: translate(-50%, -50%);
+  width: 15px;
+  height: 15px;
+  background: #ffffff;
+  /* draw the ring outside the circle */
+  box-shadow: 0 0 0 5px #a52522;
+  border-radius: 50%;
+  display: block;
+  pointer-events: none;
+  z-index: 10;
+}
