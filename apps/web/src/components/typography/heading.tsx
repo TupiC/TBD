@@ -12,6 +12,6 @@ const Heading = ({
   children: React.ReactNode;
 }): React.JSX.Element => {
   const Tag = type;
-  return <Tag className={styles[type]}>{children}</Tag>;
+  return <Tag className={`leading-8 ${styles[type]}`}>{children}</Tag>;
 };
 export default Heading;

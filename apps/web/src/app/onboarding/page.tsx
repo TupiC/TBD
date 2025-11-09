@@ -13,10 +13,13 @@ const Page = (): React.JSX.Element => {
   const next = () => {
     setCurrentStepIndex(currentStepIndex + 1);
   };
+  const back = () => {
+    setCurrentStepIndex(currentStepIndex - 1);
+  };
 
   const steps: JSX.Element[] = [
     <RootPage key="root" next={() => next()} />,
-    <ContentPage key="content1" next={() => next()} />,
+    <ContentPage key="content1" back={() => back()} next={() => next()} />,
   ];
   const currentStep = steps[currentStepIndex];
 
