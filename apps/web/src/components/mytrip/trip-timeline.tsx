@@ -4,31 +4,77 @@ import * as React from "react";
 import type { Visit } from "@/types/visit.type";
 import VisitCard from "./visit-card";
 import { toYmdKey, formatDayLabel, formatTime, type YmdKey } from "@/lib/date-utils";
+import { canShiftWithinOpening } from "@/lib/opening-hours";
 
 type TripTimelineProps = { visits: Visit[] };
 
 export const TripTimeline = ({ visits }: TripTimelineProps): React.JSX.Element => {
+  const [data, setData] = React.useState<Visit[]>(visits);
+  React.useEffect(() => setData(visits), [visits]);
+
   const groups = React.useMemo(() => {
     const byDay = new Map<YmdKey, Visit[]>();
-    visits
-      .slice()
-      .sort((a, b) => a.start - b.start)
-      .forEach((v) => {
-        const k = toYmdKey(v.start) as YmdKey;
-        const list = byDay.get(k) ?? [];
-        list.push(v);
-        byDay.set(k, list);
-      });
+    data.slice().sort((a, b) => a.start - b.start).forEach((v) => {
+      const k = toYmdKey(v.start) as YmdKey;
+      const list = byDay.get(k) ?? [];
+      list.push(v);
+      byDay.set(k, list);
+    });
+    return Array.from(byDay.entries()).map(([k, items]) => ({ k, label: formatDayLabel(k), items }));
+  }, [data]);
 
-    return Array.from(byDay.entries()).map(([k, items]) => ({
-      k,
-      label: formatDayLabel(k),
-      items,
-    }));
-  }, [visits]);
+  const LEFT_COL = "clamp(72px, 20vw, 96px)";
+  const STEP_MS = 30 * 60 * 1000; // 30 minutes
 
-  // one source of truth
-  const LEFT_COL = "clamp(72px, 1vw, 96px)";
+  const shiftVisit = (visit: Visit, deltaMs: number) => {
+    setData((prev: Visit[]) => {
+      const nextData = prev.slice() as Visit[];
+
+      const order: number[] = Array.from({ length: nextData.length }, (_, i) => i)
+        .sort((a, b) => nextData[a]!.start - nextData[b]!.start);
+
+      const targetIdx = nextData.indexOf(visit);
+      if (targetIdx === -1) return prev;
+
+      const guard = canShiftWithinOpening(nextData[targetIdx]!, deltaMs);
+      if (!guard.ok) {
+        alert(guard.msg);
+        return prev;
+      }
+
+      const pos = order.indexOf(targetIdx);
+      const applyShift = (idx: number) => {
+        const v = nextData[idx]!;
+        nextData[idx] = { ...v, start: v.start + deltaMs, end: v.end + deltaMs } as Visit;
+      };
+
+      applyShift(targetIdx);
+
+      if (deltaMs > 0) {
+        let currentEnd = nextData[targetIdx]!.end;
+        for (let p = pos + 1; p < order.length; p++) {
+          const idx = order[p]!;
+          const nxt = nextData[idx]!;
+          const g2 = canShiftWithinOpening(nxt, deltaMs);
+          if (!g2.ok) {
+            alert(g2.msg);
+            break;
+          }
+          if (nxt.start <= currentEnd) {
+            applyShift(idx);
+            currentEnd = nextData[idx]!.end;
+          } else {
+            break;
+          }
+        }
+      }
+
+      return nextData;
+    });
+  };
+
+  const incrementTime = (visit: Visit) => shiftVisit(visit, +STEP_MS);
+  const decrementTime = (visit: Visit) => shiftVisit(visit, -STEP_MS);
 
   return (
     <div className="w-full flex-1 flex flex-col">
@@ -93,6 +139,8 @@ export const TripTimeline = ({ visits }: TripTimelineProps): React.JSX.Element =
                         top: "50%",
                         transform: "translate(-50%, calc(-50% - var(--stack-offset)))",
                       }}
+                      onClick={()=> decrementTime(v)}
+
                     >
                       −
                     </button>
@@ -107,6 +155,7 @@ export const TripTimeline = ({ visits }: TripTimelineProps): React.JSX.Element =
                         top: "50%",
                         transform: "translate(-50%, calc(-50% + var(--stack-offset)))",
                       }}
+                      onClick={()=> incrementTime(v)}
                     >
                       +
                     </button>
