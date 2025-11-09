@@ -9,7 +9,7 @@ export const ExperienceCard = ({
 }: ExperienceCardProps): React.JSX.Element => {
   return (
     <div
-      className="exp-timeline-card-item w-[100%] h-[142px] bg-white rounded-[8px] p-4"
+      className="exp-timeline-card-item w-[100%] h-[142px] bg-white rounded-[8px] "
       style={{
         boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
         backgroundImage: `url(${exp.thumbnailUrl})`,

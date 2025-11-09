@@ -42,7 +42,7 @@ const Page = (): React.JSX.Element => {
       </h1>
       <Tabs defaultValue="timeline" className="w-[100%] flex-1 flex flex-col">
         <TabsList
-          className="w-full flex gap-2 bg-gray-200 p-2 rounded-md "
+          className="w-full flex gap-2 bg-gray-200 rounded-md "
           style={{ marginBottom: "16px" }}
         >
           <TabsTrigger value="timeline" className="flex-1">
