@@ -115,6 +115,28 @@ export default function MyMap({
         popupAnchor: [0, -36],
         shadowSize: [41, 41],
       });
+      // Also ensure Leaflet's default icon is configured. This prevents cases where
+      // Marker creation fails because the library's default options.icon is missing
+      // (observed when the component is unmounted and remounted in Next.js/Turbopack).
+      try {
+        if (
+          L.Icon &&
+          L.Icon.Default &&
+          typeof L.Icon.Default.mergeOptions === "function"
+        ) {
+          L.Icon.Default.mergeOptions({
+            iconUrl:
+              "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+            iconRetinaUrl:
+              "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+            shadowUrl:
+              "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+          });
+        }
+      } catch (e) {
+        // ignore - defensive
+      }
+
       if (mounted) setMarkerIcon(icon);
     });
 
@@ -178,46 +200,39 @@ export default function MyMap({
           }
         />
 
-        {pts.map((p) => (
-          <MarkerAny
-            key={p.id}
-            position={[p.lat, p.lng]}
-            icon={markerIcon ?? undefined}
-          >
-            <PopupAny>
-              <div style={{ maxWidth: 240 }}>
-                {p.title && <h4 style={{ margin: "0 0 6px" }}>{p.title}</h4>}
-                {p.thumbnailUrl && (
-                  <img
-                    src={p.thumbnailUrl}
-                    alt={p.title ?? "thumbnail"}
-                    style={{
-                      width: "100%",
-                      height: 120,
-                      objectFit: "cover",
-                      borderRadius: 6,
-                      marginBottom: 6,
-                    }}
-                  />
-                )}
-                {p.description && (
-                  <p style={{ margin: 0, fontSize: 14, lineHeight: 1.4 }}>
-                    {p.description}
-                  </p>
-                )}
-              </div>
-            </PopupAny>
-          </MarkerAny>
-        ))}
+        {/* Only render markers after we've initialized the Leaflet icon. Rendering
+            Marker components before the icon is ready can cause Leaflet internals to
+            attempt to call createIcon on an undefined options.icon (seen on remount).
+            Waiting briefly for markerIcon prevents the runtime error. */}
+        {markerIcon &&
+          pts.map((p) => (
+            <MarkerAny key={p.id} position={[p.lat, p.lng]} icon={markerIcon}>
+              <PopupAny>
+                <div style={{ maxWidth: 240 }}>
+                  {p.title && <h4 style={{ margin: "0 0 6px" }}>{p.title}</h4>}
+                  {p.thumbnailUrl && (
+                    <img
+                      src={p.thumbnailUrl}
+                      alt={p.title ?? "thumbnail"}
+                      style={{
+                        width: "100%",
+                        height: 120,
+                        objectFit: "cover",
+                        borderRadius: 6,
+                        marginBottom: 6,
+                      }}
+                    />
+                  )}
+                  {p.description && (
+                    <p style={{ margin: 0, fontSize: 14, lineHeight: 1.4 }}>
+                      {p.description}
+                    </p>
+                  )}
+                </div>
+              </PopupAny>
+            </MarkerAny>
+          ))}
       </MapContainerAny>
     </div>
   );
 }
-
-// // ---------- Optional helper: adapt {x,y} to {lat,lng} ----------
-// export type XYPoint = { id: string | number; x: number; y: number }
-// export const xyToMapPoint = (p: XYPoint): MapPoint => ({
-//   id: p.id,
-//   lng: p.x, // x -> lng
-//   lat: p.y, // y -> lat
-// })
