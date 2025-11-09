@@ -3,7 +3,11 @@ import Heading from "../typography/heading";
 import { Button } from "../ui/button";
 import { ArrowRight } from "lucide-react";
 
-const RootPage = ({ next }: { next: () => void }): React.JSX.Element => {
+const RootPage = ({
+  next,
+}: {
+  next: (data: undefined | object) => void;
+}): React.JSX.Element => {
   return (
     <div className={`h-full w-full flex flex-col relative`}>
       <div className="relative -translate-x-[10%] w-[120%] flex justify-center z-10">
@@ -23,7 +27,11 @@ const RootPage = ({ next }: { next: () => void }): React.JSX.Element => {
           <Heading type="h3">Personalisiere deine Reise!</Heading>
         </div>
         <div className={`px-12 flex flex-col items-end flex-1`}>
-          <Button variant={"round"} size={"round-lg"} onClick={() => next()}>
+          <Button
+            variant={"round"}
+            size={"round-lg"}
+            onClick={() => next(undefined)}
+          >
             <ArrowRight strokeWidth={3} className="size-7" />
           </Button>
         </div>

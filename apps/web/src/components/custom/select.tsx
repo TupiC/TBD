@@ -14,10 +14,14 @@ const CustomSelect = ({
   label,
   placeholder,
   items,
+  state,
+  setState,
 }: {
   label: string;
   placeholder: string;
-  items: JSX.Element[];
+  items: JSX.Element;
+  state: string;
+  setState: (val: string) => void;
 }): JSX.Element => {
   const id = useId();
   return (
@@ -25,12 +29,12 @@ const CustomSelect = ({
       <Label htmlFor={id} className="px-1">
         {label}
       </Label>
-      <Select>
+      <Select value={state} onValueChange={setState}>
         <SelectTrigger id={id} className="w-[180px]">
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>
-          <SelectGroup>{items.map((item) => item)}</SelectGroup>
+          <SelectGroup>{items}</SelectGroup>
         </SelectContent>
       </Select>
     </div>

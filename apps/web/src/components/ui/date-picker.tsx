@@ -12,9 +12,16 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-const DatePicker = ({ label }: { label: string }) => {
+const DatePicker = ({
+  label,
+  state,
+  setState,
+}: {
+  label: string;
+  state: Date | undefined;
+  setState: (val: Date | undefined) => void;
+}) => {
   const [open, setOpen] = React.useState(false);
-  const [date, setDate] = React.useState<Date | undefined>(undefined);
 
   return (
     <div className="flex flex-col gap-2">
@@ -28,17 +35,17 @@ const DatePicker = ({ label }: { label: string }) => {
             id="date"
             className="w-48 justify-between font-normal"
           >
-            {date ? date.toLocaleDateString() : "Select date"}
+            {state ? state.toLocaleDateString() : "Select date"}
             <ChevronDownIcon />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto overflow-hidden p-0" align="start">
           <Calendar
             mode="single"
-            selected={date}
+            selected={state}
             captionLayout="dropdown"
             onSelect={(date) => {
-              setDate(date);
+              setState(date);
               setOpen(false);
             }}
           />

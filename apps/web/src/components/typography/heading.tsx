@@ -6,12 +6,15 @@ const styles = {
 
 const Heading = ({
   type = "h1",
+  style,
   children,
 }: {
   type?: "h1" | "h2" | "h3";
+  style?: "h1" | "h2" | "h3";
   children: React.ReactNode;
 }): React.JSX.Element => {
   const Tag = type;
-  return <Tag className={` ${styles[type]}`}>{children}</Tag>;
+  const customStyle = style === undefined ? type : style;
+  return <Tag className={`${styles[customStyle]}`}>{children}</Tag>;
 };
 export default Heading;
