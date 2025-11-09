@@ -12,13 +12,7 @@ const Page = (): React.JSX.Element => {
 
   return (
     <main
-      style={{
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        padding: "16px 10px",
-        backgroundColor: "#A52522",
-      }}
+      className="min-h-screen flex flex-col p-4 bg-[#A52522]"
     >
       <h1
         className="text-white"
