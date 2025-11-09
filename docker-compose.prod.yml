@@ -29,9 +29,8 @@ services:
 
         volumes:
             - ./apps/cms/config:/usr/src/app/apps/cms/config
-            - ./apps/cms/src:/usr/src/app/apps/cms/src
             - ./apps/cms/types:/usr/src/app/apps/cms/types
-            - ./yarn.lock:/usr/src/app/yarn.lock
+            - ./pnpm-lock.yaml:/usr/src/app/pnpm-lock.yaml
             - ./apps/cms/favicon.png:/usr/src/app/apps/cms/favicon.png
             - ./apps/cms/public/uploads:/usr/src/app/apps/cms/public/uploads
         ports:
