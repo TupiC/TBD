@@ -28,11 +28,11 @@ export const TripTimeline = ({ visits }: TripTimelineProps): React.JSX.Element =
   }, [visits]);
 
   // one source of truth
-  const LEFT_COL = "112px";
+  const LEFT_COL = "clamp(72px, 1vw, 96px)";
 
   return (
     <div className="w-full flex-1 flex flex-col">
-      <div className="relative flex-1 overflow-y-auto px-3">
+      <div className="relative flex-1 overflow-y-auto  px-1 sm:px-3">
         {/* Expose --left-col so every child uses the exact same value */}
         <div
           className="relative mx-auto w-full max-w-[920px] space-y-10"
@@ -47,7 +47,7 @@ export const TripTimeline = ({ visits }: TripTimelineProps): React.JSX.Element =
           {groups.map(({ k, label, items }) => (
             <section key={k} className="relative">
               {/* Day chip aligned with card column */}
-              <div className="flex items-center gap-3 pr-3" style={{ marginLeft: "var(--left-col)" }}>
+              <div className="flex items-center gap-1 pr-3" style={{ marginLeft: "var(--left-col)" }}>
                 <span className="h-px flex-1 bg-white/60" />
                 <span className="rounded-xl bg-white/95 px-4 py-1 text-sm font-semibold text-neutral-900 shadow-sm">
                   {label}
@@ -59,18 +59,15 @@ export const TripTimeline = ({ visits }: TripTimelineProps): React.JSX.Element =
                 {items.map((v, i) => (
                   <div
                     key={`${k}-${i}`}
-                    className="grid items-stretch gap-6"
+                    className="grid items-stretch gap-1 sm:gap-6"
                     style={{ gridTemplateColumns: "var(--left-col) 1fr" }}
                   >
-                    {/* LEFT COLUMN: controls centered exactly on the rail */}
-                    {/* LEFT COLUMN: center the TIME bubble; place ± at fixed offsets */}
+
 <div className="relative">
   {/* one place to tweak sizes if you ever change button/bubble heights */}
   <div
     className="absolute inset-0"
     style={{
-      // half(time) + gap + half(control) = 28 + 12 + 18 = 58px
-      // (h-14 = 56px, h-9 = 36px, gap-3 = 12px)
       ["--stack-offset" as any]: "58px",
     }}
   >
