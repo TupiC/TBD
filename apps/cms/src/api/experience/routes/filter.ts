@@ -8,12 +8,6 @@ export default {
                 auth: false,
             },
         },
-        {
-            method: "GET",
-            path: "/experience/:id",                
-            handler: "api::experience.filter.findById",         
-            config: {auth: false,  },
-        },
     ],
     
 };
