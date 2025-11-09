@@ -38,6 +38,7 @@ export default {
                                 : []),
                         ],
                     },
+                    populate: "*",
                     status: "published",
                 });
             ctx.send(experiences);
