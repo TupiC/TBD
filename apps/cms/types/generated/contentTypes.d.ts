@@ -485,12 +485,43 @@ export interface ApiExperienceExperience extends Struct.CollectionTypeSchema {
       }>;
     publishedAt: Schema.Attribute.DateTime;
     summary: Schema.Attribute.RichText;
+    trips: Schema.Attribute.Relation<'manyToMany', 'api::trip.trip'>;
     unrestricted_access: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     url: Schema.Attribute.String;
+  };
+}
+
+export interface ApiTripTrip extends Struct.CollectionTypeSchema {
+  collectionName: 'trips';
+  info: {
+    displayName: 'trips';
+    pluralName: 'trips';
+    singularName: 'trip';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    end_date: Schema.Attribute.DateTime;
+    experiences: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::experience.experience'
+    >;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::trip.trip'> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    start_date: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
   };
 }
 
@@ -1005,6 +1036,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::experience.experience': ApiExperienceExperience;
+      'api::trip.trip': ApiTripTrip;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

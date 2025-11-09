@@ -36,15 +36,13 @@ See apps/cms/.env.example for reference.
 
 ```json
 {
-    "planned_visits": [
-        {
-            "experience": {
-                ...
-            },
-            "start": 12323423,
-            "end": 234234234
+    "data": {
+        "start_date": "2025-11-11T00:00:00.000Z",
+        "end_date": "2025-11-19T00:00:00.000Z",
+        "experiences": {
+            "connect": ["dw9aongvv0ywpmadzp8bq04n", "szg4bby9itglyzylxl4h4umh"]
         }
-    ]
+    }
 }
 ```
 

@@ -101,6 +101,12 @@
           "localized": true
         }
       }
+    },
+    "trips": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::trip.trip",
+      "inversedBy": "experiences"
     }
   }
 }
