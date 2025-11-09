@@ -236,6 +236,8 @@ const Page = (): React.JSX.Element => {
     const [currentStepIndex] = useState(0);
     const experiences = useExpStore((state) => state.experiences);
 
+    console.log("Exp in detail page:", experiences);
+
     const visit = experiences.find((e) => e.key === params.key) as
         | Visit
         | undefined;
